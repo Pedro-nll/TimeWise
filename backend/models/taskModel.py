@@ -17,4 +17,5 @@ class Task(db.Model):
             "name": self.name,
             "description": self.description,
             "done": self.done,
+            "projectId": self.project_id,
         }

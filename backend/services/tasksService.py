@@ -66,3 +66,11 @@ class TaskService:
         db.session.delete(task)
         db.session.commit()
         return {"message": "Task deleted"}, 200
+    
+    def get_task(self, id):
+        task = Task.query.get(id)
+        
+        if not task:
+            return {"message": "Task not found"}, 404
+        
+        return task.to_json()
