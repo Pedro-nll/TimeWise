@@ -3,136 +3,17 @@
 ## Tasks
 
 ### Sumário
-- [Buscar todas as tasks](#buscar-todas-as-tasks)
-- [Buscar uma task específica](#buscar-uma-task-específica)
-- [Criar uma task](#criar-uma-task)
-- [Mudar o status de uma task para feita](#mudar-o-status-de-uma-task-para-feita)
-- [Atualizar os dados de uma task](#atualizar-os-dados-de-uma-task)
-- [Deletar uma task](#deletar-uma-task)
-  
-### Buscar todas as tasks
+- [Buscar todas as tasks](/docs/endpoints-tasks.md#buscar-todas-as-tasks)
+- [Buscar uma task específica](/docs/endpoints-tasks.md#buscar-uma-task-específica)
+- [Criar uma task](/docs/endpoints-tasks.md#criar-uma-task)
+- [Mudar o status de uma task para feita](/docs/endpoints-tasks.md#mudar-o-status-de-uma-task-para-feita)
+- [Atualizar os dados de uma task](/docs/endpoints-tasks.md#atualizar-os-dados-de-uma-task)
+- [Deletar uma task](/docs/endpoints-tasks.md#deletar-uma-task)
+ 
 
-**Endpoint:** `/all`  
-**Método:** `GET`  
-**Descrição:** Retorna todas as tasks disponíveis, independentemente do projeto.
-
-**Resposta de Sucesso:**
-- **Código:** 200
-- **Conteúdo:**
-    ```json
-    [
-      {
-        "id": 1,
-        "name": "Task 1",
-        "description": "Description for task 1",
-        "done": false,
-        "projectId": 1
-      },
-      ...
-    ]
-    ```
-
-### Buscar uma task específica
-
-**Endpoint:** `/<int:task_id>`  
-**Método:** `GET`  
-**Descrição:** Retorna os detalhes de uma task específica baseada no seu ID.
-
-**Parâmetros de URL:**
-- `task_id`: ID da task a ser buscada.
-
-**Resposta de Sucesso:**
-- **Código:** 200
-- **Conteúdo:**
-    ```json
-    {
-      "id": 1,
-      "name": "Task 1",
-      "description": "Description for task 1",
-      "done": false,
-      "projectId": 1
-    }
-    ```
-
-### Criar uma task
-
-**Endpoint:** `/`  
-**Método:** `POST`  
-**Descrição:** Cria uma nova task e a adiciona ao projeto especificado pelo `projectId`.
-
-**Corpo da Requisição:**
-```json
-{
-  "name": "Task Name",
-  "description": "Task Description",
-  "done": false,
-  "projectId": 1
-}
-```
-
-**Resposta de Sucesso:**
-- **Código:** 201
-- **Conteúdo:**
-    ```json
-    {
-      "message": "Task created!"
-    }
-    ```
-
-### Mudar o status de uma task para feita
-
-**Endpoint:** `/do/<int:task_id>`  
-**Método:** `POST`  
-**Descrição:** Atualiza o status da task para 'feita'.
-
-**Parâmetros de URL:**
-- `task_id`: ID da task a ser atualizada.
-
-**Resposta de Sucesso:**
-- **Código:** 200
-- **Conteúdo:**
-    ```json
-    {
-      "message": "Task done"
-    }
-    ```
-
-### Atualizar os dados de uma task
-
-**Endpoint:** `/<int:task_id>`  
-**Método:** `PUT`  
-**Descrição:** Atualiza os dados de uma task específica.
-
-**Parâmetros de URL:**
-- `task_id`: ID da task a ser atualizada.
-
-**Corpo da Requisição:**
-```json
-{
-  "name": "New Task Name",
-  "description": "New Task Description",
-  "done": true
-}
-```
-
-**Resposta de Sucesso:**
-- **Código:** 200
-- **Conteúdo:**
-    ```json
-    {
-      "message": "Task edited"
-    }
-    ```
-
-### Deletar uma task
-
-**Endpoint:** `/<int:task_id>`  
-**Método:** `DELETE`  
-**Descrição:** Deleta uma task específica.
-
-**Parâmetros de URL:**
-- `task_id`: ID da task a ser deletada.
-
-**Resposta de Sucesso:**
-- **Código:** 204
-- **Conteúdo:** (vazio)
+## Projects
+### Sumário
+- [Buscar todos os projetos](/docs/endpoints-projects.md#buscar-todos-os-projetos)
+- [Criar um projeto](/docs/endpoints-projects.md#criar-um-projeto)
+- [Editar um projeto](/docs/endpoints-projects.md#editar-um-projeto)
+- [Deletar um projeto](/docs/endpoints-projects.md#deletar-um-projeto)
