@@ -1,0 +1,22 @@
+.header {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 60px; /* Adjust the height as needed */
+    background-color: #1e1e1e8f; /* Slightly darker than the page background */
+    display: flex;
+    align-items: center;
+    justify-content: left;
+    z-index: 1000; /* Ensure it stays on top */
+}
+
+.logo {
+    height: 40px; /* Adjust the size as needed */
+}
+
+@media (max-width: 768px) {
+    .logo {
+        height: 30px; /* Adjust the size for smaller screens */
+    }
+}

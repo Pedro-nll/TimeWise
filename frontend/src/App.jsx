@@ -1,11 +1,17 @@
-import { useState } from 'react'
+import { BrowserRouter, Route, Routes } from "react-router-dom"
 import './App.css'
+import Home from './pages/Home'
+import { MantineProvider } from '@mantine/core'
 
 function App() {
   return (
-    <>
-      
-    </>
+    <MantineProvider>
+            {<BrowserRouter>
+                <Routes>
+                    <Route path="/" element={<Home />} />
+                </Routes>
+            </BrowserRouter>}
+      </MantineProvider>
   )
 }
 
