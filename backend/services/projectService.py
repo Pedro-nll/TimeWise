@@ -35,7 +35,7 @@ class ProjectService:
         try:
             db.session.add(new_project)
             db.session.commit()
-            return {'message': 'Project created'}, 200
+            return {'project': new_project.to_json()}, 200
         except Exception as e:
             db.session.rollback()
             return {'message': str(e)}, 400
@@ -56,8 +56,8 @@ class ProjectService:
         if not project:
             return {'message': 'Project not found'}, 404
         
-        new_name = data.get['name']
-        new_description = data.get['description']
+        new_name = data.get('name')
+        new_description = data.get('description')
         
         if not new_name or not new_description:
             return {'message': 'Bad request'}, 400
@@ -66,4 +66,4 @@ class ProjectService:
         project.description = new_description
         
         db.session.commit()
-        return {'message': 'Project editted'}, 200
+        return {'project': project.to_json()}, 200
