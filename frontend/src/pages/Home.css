@@ -1,0 +1,62 @@
+.grid-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    padding: 1rem;
+    margin-top: 2rem; /* Ensure it starts below the header */
+    justify-content: flex-start; /* Align to the top-left corner */
+    align-items: flex-start; /* Align items to the top */
+}
+
+.project-card {
+    background-color: #333;
+    border-radius: 8px;
+    padding: 1rem;
+    width: 300px; /* Base size */
+    color: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    display: flex;
+    flex-direction: column;
+    position: relative; /* To position the buttons absolutely */
+    margin: 0; /* Remove any margin that could cause centering */
+}
+
+.project-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    position: relative;
+}
+
+.project-title {
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+.project-buttons {
+    display: flex;
+    gap: 0rem;
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+
+.project-buttons button {
+    background: none;
+    border: none;
+    color: white;
+    cursor: pointer;
+    font-size: 1rem;
+    padding: 0.3rem;
+    margin: 0.2rem;
+}
+
+.project-buttons button:hover {
+    color: #646cff;
+}
+
+.project-description {
+    font-style: italic;
+    font-size: 0.7rem;
+}

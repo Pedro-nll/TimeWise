@@ -1,5 +1,6 @@
 from config import db
 from models.projectModel import Project
+from models.taskModel import Task
 
 class ProjectService:
     def get_all_projects(self):
@@ -7,9 +8,22 @@ class ProjectService:
         projects_json = [project.to_json() for project in projects]
         return projects_json
     
+    def get_all_projects_with_tasks(self):
+        projects_with_tasks = {}
+        projects = Project.query.all()
+        for project in projects:
+            projects_with_tasks['id'] = project.id
+            projects_with_tasks['name'] = project.name
+            projects_with_tasks['description'] = project.description
+            tasks = Task.query.filter_by(project_id = project.id)
+            tasks_json = [task.to_json for task in tasks]
+            projects_with_tasks['tasks'] = tasks_json
+        
+        return projects_with_tasks
+    
     def create_project(self, data):
-        name = data.get['name']
-        description = data.get['description']
+        name = data.get('name')
+        description = data.get('description')
         
         if not name or not description:
             return {'message': 'Bad request'}, 400

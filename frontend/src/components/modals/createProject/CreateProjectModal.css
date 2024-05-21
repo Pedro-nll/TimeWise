@@ -1,0 +1,80 @@
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1001; /* Ensure it stays on top of the header */
+}
+
+.modal {
+    background-color: #1e1e1e; /* Dark background */
+    padding: 1.5rem;
+    border-radius: 8px;
+    position: relative;
+    width: 400px;
+    max-width: 90%;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.modal-logo {
+    height: 50px;
+    margin-top: -1rem; /* Move the logo up */
+    margin-bottom: 0.25rem; /* Reduced bottom margin */
+}
+
+.modal-close {
+    position: absolute;
+    top: 0.25rem;
+    right: 0.5rem;
+    background: none;
+    border: none;
+    color: white;
+    font-size: 1.5rem;
+    cursor: pointer;
+}
+
+.modal-separator {
+    width: 100%;
+    height: 1px;
+    background-color: white;
+    margin: 0.5rem 0;
+}
+
+.modal .mantine-TextInput-root, 
+.modal .mantine-Textarea-root {
+    width: 100%;
+    margin-bottom: 1rem;
+}
+
+.modal .mantine-TextInput-input, 
+.modal .mantine-Textarea-input {
+    background-color: #2e2e2e; /* Darker background for input fields */
+    border: none;
+    border-radius: 8px;
+    color: white;
+    padding: 0.75rem;
+    font-size: 1rem;
+}
+
+.submit-button {
+    background-color: #3d44c5; /* Darker button color */
+    color: white;
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s, box-shadow 0.3s;
+}
+
+.submit-button:hover {
+    background-color: #212575; /* Even darker shade on hover */
+    box-shadow: 0 0 10px rgba(99, 99, 255, 0.5); /* Glow effect */
+}

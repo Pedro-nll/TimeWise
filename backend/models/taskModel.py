@@ -8,7 +8,7 @@ class Task(db.Model):
     description = db.Column(db.String(120), unique=False, nullable=True)
     done = db.Column(db.Boolean, unique=False, nullable=False)
     
-    project_id = db.Column(db.Integer, db.ForeignKey('project.id'), nullable=False, unique=False)
+    project_id = db.Column(db.Integer, db.ForeignKey('projects.id'), nullable=False, unique=False)
     project = db.relationship('Project', back_populates="tasks")
     
     def to_json(self):
