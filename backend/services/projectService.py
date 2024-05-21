@@ -9,15 +9,17 @@ class ProjectService:
         return projects_json
     
     def get_all_projects_with_tasks(self):
-        projects_with_tasks = {}
+        projects_with_tasks = []
         projects = Project.query.all()
         for project in projects:
-            projects_with_tasks['id'] = project.id
-            projects_with_tasks['name'] = project.name
-            projects_with_tasks['description'] = project.description
+            aux = {}
+            aux['id'] = project.id
+            aux['name'] = project.name
+            aux['description'] = project.description
             tasks = Task.query.filter_by(project_id = project.id)
             tasks_json = [task.to_json for task in tasks]
-            projects_with_tasks['tasks'] = tasks_json
+            aux['tasks'] = tasks_json
+            projects_with_tasks.append(aux)
         
         return projects_with_tasks
     

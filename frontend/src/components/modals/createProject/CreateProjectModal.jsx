@@ -2,22 +2,21 @@ import React, { useState } from 'react';
 import simpleLogo from '../../../assets/simpleLogo.png';
 import { Modal, TextInput, Textarea, Button } from '@mantine/core';
 import './CreateProjectModal.css';
+import { APIReq } from '../../../APIReq';
 
 const CreateProjectModal = ({ onClose }) => {
     const [name, setName] = useState('');
     const [description, setDescription] = useState('');
 
     const handleSubmit = async () => {
-        const response = await fetch('http://localhost:8080/projects', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                name,
-                description,
-            }),
-        });
+
+        const body = JSON.stringify({
+            name,
+            description,
+        })
+
+        const REST = new APIReq()
+        const response = await REST.postRequest('/projects', body)
         if (response.ok) {
             onClose();
         } else {

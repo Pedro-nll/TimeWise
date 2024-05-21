@@ -32,30 +32,34 @@ const Home = () => {
 
     return (
         <>
-            <Header />
-            <div className="grid-container">
-                {projects.map((project) => (
-                    <div key={project.id} className="project-card">
-                        <div className="project-header">
-                            <div className="project-title">{project.name}</div>
-                            <div className="project-buttons">
-                                <button>
-                                    <FontAwesomeIcon icon={faPen} />
-                                </button>
-                                <button>
-                                    <FontAwesomeIcon icon={faPlus} />
-                                </button>
-                                <button>
-                                    <FontAwesomeIcon icon={faTrash} />
-                                </button>
+            <header>
+                <Header />
+            </header>
+            <body>
+                <div className="grid-container">
+                    {projects.map((project) => (
+                        <div key={project.id} className="project-card">
+                            <div className="project-header">
+                                <div className="project-title">{project.name}</div>
+                                <div className="project-buttons">
+                                    <button>
+                                        <FontAwesomeIcon icon={faPen} />
+                                    </button>
+                                    <button>
+                                        <FontAwesomeIcon icon={faPlus} />
+                                    </button>
+                                    <button>
+                                        <FontAwesomeIcon icon={faTrash} />
+                                    </button>
+                                </div>
+                            </div>
+                            <div className="project-description">
+                                {project.description}
                             </div>
                         </div>
-                        <div className="project-description">
-                            {project.description}
-                        </div>
-                    </div>
-                ))}
-            </div>
+                    ))}
+                </div>
+            </body>
         </>
     );
 }
