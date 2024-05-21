@@ -6,11 +6,6 @@ project_service = ProjectService()
 
 #get all
 class ProjectController:
-    @project_blueprint.route('/all', methods=["GET"])
-    def get_all():
-        projects = project_service.get_all_projects()
-        return jsonify(projects)
-    
     @project_blueprint.route('/all-with-tasks', methods=["GET"])
     def get_all_with_tasks():
         projects = project_service.get_all_projects_with_tasks()

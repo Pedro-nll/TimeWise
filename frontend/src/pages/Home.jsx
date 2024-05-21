@@ -9,6 +9,7 @@ import { faPen, faPlus, faTrash } from '@fortawesome/free-solid-svg-icons';
 import ProjectModal from '../components/modals/projectModal/ProjectModal';
 import TaskModal from '../components/modals/taskModal/TaskModal';
 import DeleteModal from '../components/modals/deleteModal/deleteModal';
+import Task from '../components/tasks/Task';
 
 let newProjectId = null; 
 
@@ -102,13 +103,12 @@ const Home = () => {
             const response = await REST.deleteRequest(`/projects/${currentProject.id}`);
             if (response.status === 200) {
                 const projectId = currentProject.id;
-                // Temporarily set the project as leaving
                 setLeavingProject(projectId);
                 setIsDeleteModalOpen(false);
                 setTimeout(() => {
                     setProjects(projects.filter(project => project.id !== projectId));
                     setLeavingProject(null);
-                }, 300); // Duration must match the CSS transition duration
+                }, 300);
             }
         } catch (error) {
             console.error('Error deleting project:', error);
@@ -116,6 +116,8 @@ const Home = () => {
     };
 
     const handleCreateTask = async (taskData) => {
+        const REST = new APIReq();
+        taskData.projectId = taskData.projectId == null ? currentProject.id : taskData.projectId;
         try {
             const body = JSON.stringify(taskData);
             const response = await REST.postRequest('/tasks', body);
@@ -133,7 +135,7 @@ const Home = () => {
         } catch (error) {
             console.error('Error creating task:', error);
         }
-    };
+    };    
 
     const openProjectModal = (type, project = null) => {
         setModalType(type);
@@ -149,7 +151,7 @@ const Home = () => {
             setIsTaskModalOpen(false);
             setIsDeleteModalOpen(false);
             setModalClass('');
-        }, 300); // Duration must match the animation duration
+        }, 300); 
     };
 
     const openTaskModal = (project) => {
@@ -171,7 +173,7 @@ const Home = () => {
             </header>
             <div className='body'>
                 <div className="grid-container">
-                    {projects.map((project) => (
+                {projects.map((project) => (
                         <div key={project.id} 
                              className={`project-card ${
                                  project.id === newProjectId ? 'glow' : '' 
@@ -191,8 +193,11 @@ const Home = () => {
                                     </button>
                                 </div>
                             </div>
-                            <div className="project-description">
-                                {project.description}
+                            <div className="project-description">{project.description}</div>
+                            <div className="task-list">
+                                {project.tasks && project.tasks.map((task) => (
+                                    <Task key={task.id} task={task} />
+                                ))}
                             </div>
                         </div>
                     ))}
@@ -201,21 +206,21 @@ const Home = () => {
                         onClose={closeModal}
                         onSubmit={modalType === 'create' ? handleCreateProject : handleEditProject}
                         initialData={modalType === 'edit' ? currentProject : {}}
-                        className={modalClass} // Apply animation class
+                        className={modalClass} 
                     />
                     <TaskModal
                         isOpen={isTaskModalOpen}
                         onClose={closeModal}
                         onSubmit={handleCreateTask}
                         projectId={currentProject?.id}
-                        className={modalClass} // Apply animation class
+                        className={modalClass} 
                     />
                     <DeleteModal
                         isOpen={isDeleteModalOpen}
                         onClose={closeModal}
                         onConfirm={handleDeleteProject}
                         itemName={currentProject?.name}
-                        className={modalClass} // Apply animation class
+                        className={modalClass} 
                     />
                 </div>
             </div>

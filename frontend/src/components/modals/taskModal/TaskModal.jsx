@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import '../Modal.css';
-import simpleLogo from '../../../assets/simpleLogo.png';
+import { Button, TextInput, Textarea } from '@mantine/core';
+import ModalHeader from '../ModalHeader';
 
 const TaskModal = ({ isOpen, onClose, onSubmit, initialData = {}, projectId }) => {
     const [taskData, setTaskData] = useState({
@@ -27,23 +28,24 @@ const TaskModal = ({ isOpen, onClose, onSubmit, initialData = {}, projectId }) =
 
     return (
         <div className="modal-overlay">
-            <div className="modal-content">
-                <div className="modal-header">
-                    <img src={simpleLogo} alt="Logo" className="modal-logo" />
-                    <button className="close-button" onClick={onClose}>X</button>
-                </div>
+            <div className="modal">
+                <ModalHeader onClose={onClose}></ModalHeader>
                 <div className="modal-body">
-                    <form onSubmit={handleSubmit}>
-                        <div className="form-group">
-                            <label htmlFor="name">Task Name</label>
-                            <input type="text" id="name" name="name" value={taskData.name} onChange={handleChange} required />
-                        </div>
-                        <div className="form-group">
-                            <label htmlFor="description">Task Description</label>
-                            <textarea id="description" name="description" value={taskData.description} onChange={handleChange} required />
-                        </div>
-                        <button type="submit">Save Task</button>
-                    </form>
+                    <TextInput
+                        label="Task Name"
+                        name="name"
+                        value={taskData.name}
+                        onChange={handleChange}
+                        required
+                    />
+                    <Textarea
+                        label="Task Description"
+                        name="description"
+                        value={taskData.description}
+                        onChange={handleChange}
+                        required
+                    />
+                    <Button onClick={handleSubmit} className="submit-button">Save Task</Button>
                 </div>
             </div>
         </div>

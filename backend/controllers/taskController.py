@@ -22,8 +22,8 @@ def get_task(task_id):
 @tasks_blueprint.route('', methods=['POST'])
 def create_task():
     data = request.get_json()
-    result = tasks_service.create_task(data)
-    return jsonify(result), 201 # 201 created
+    result, status_code = tasks_service.create_task(data)
+    return jsonify(result), status_code
 
 # Mudar o status de uma task para feita
 @tasks_blueprint.route('/do/<int:task_id>', methods=['POST'])

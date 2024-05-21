@@ -49,7 +49,6 @@ const ProjectModal = ({ isOpen, onClose, onSubmit, initialData = {} }) => {
                         name="description"
                         value={projectData.description}
                         onChange={handleChange}
-                        required
                     />
                     <Button onClick={handleSubmit} className="submit-button">Save Project</Button>
                 </div>

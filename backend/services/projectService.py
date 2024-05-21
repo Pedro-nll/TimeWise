@@ -10,14 +10,14 @@ class ProjectService:
     
     def get_all_projects_with_tasks(self):
         projects_with_tasks = []
-        projects = Project.query.all()
+        projects = self.get_all_projects()
         for project in projects:
             aux = {}
-            aux['id'] = project.id
-            aux['name'] = project.name
-            aux['description'] = project.description
-            tasks = Task.query.filter_by(project_id = project.id)
-            tasks_json = [task.to_json for task in tasks]
+            aux['id'] = project.get('id')
+            aux['name'] = project.get('name')
+            aux['description'] = project.get('description')
+            tasks = Task.query.filter_by(project_id = project['id'])
+            tasks_json = [task.to_json() for task in tasks]
             aux['tasks'] = tasks_json
             projects_with_tasks.append(aux)
         
