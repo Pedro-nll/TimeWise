@@ -50,8 +50,8 @@ const Home = () => {
         try {
             const body = JSON.stringify(projectData);
             const response = await REST.postRequest('/projects', body);
-            if (response.status === 200) { 
-                const newProject = response.data[0].project;
+            if (response.status === 200) {
+                const newProject = response.data.project;
                 newProjectId = newProject.id;
                 setProjects((prevProjects) => {
                     setEnteringProject(newProjectId);

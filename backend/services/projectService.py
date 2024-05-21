@@ -27,7 +27,7 @@ class ProjectService:
         name = data.get('name')
         description = data.get('description')
         
-        if not name or not description:
+        if not name:
             return {'message': 'Bad request'}, 400
         
         new_project = Project(name = name, description = description)

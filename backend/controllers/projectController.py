@@ -15,8 +15,8 @@ class ProjectController:
     @project_blueprint.route('', methods=["POST"])
     def create_project():
         data = request.get_json()
-        res = project_service.create_project(data)
-        return jsonify(res)
+        res, status = project_service.create_project(data)
+        return jsonify(res), status
 
     #delete
     @project_blueprint.route("/<int:project_id>", methods=["DELETE"])

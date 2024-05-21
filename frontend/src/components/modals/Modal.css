@@ -78,3 +78,12 @@
     background-color: #212575; /* Even darker shade on hover */
     box-shadow: 0 0 10px rgba(99, 99, 255, 0.5); /* Glow effect */
 }
+
+.custom-toast-warning {
+    background-color: #ff4d4d !important;
+    color: #ffffff !important;
+
+}
+.custom-toast-warning .Toastify__toast-icon {
+    color: #ffffff !important;
+}
