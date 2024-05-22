@@ -5,10 +5,10 @@ import './Header.css';
 import { Button } from '@mantine/core';
 import ProjectModal from '../modals/projectModal/ProjectModal';
 
-const Header = ({handleCreateProject}) => {
+const Header = ({ handleCreateProject, setShowCompletedTasks_arg, showCompletedTasks_arg }) => {
+    const [showCompletedTasks, setShowCompletedTasks] = useState(showCompletedTasks_arg);
     const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth < 768);
     const [isProjectModalOpen, setIsProjectModalOpen] = useState(false);
-    const [modalType, setModalType] = useState('create');
 
     useEffect(() => {
         const handleResize = () => {
@@ -26,24 +26,41 @@ const Header = ({handleCreateProject}) => {
     };
 
     const handleSubmit = (projectData) => {
-        handleCreateProject(projectData)
-        setIsProjectModalOpen(false)
-    }
+        handleCreateProject(projectData);
+        setIsProjectModalOpen(false);
+    };
+
+    const handleCheckboxChange = (e) => {
+        setShowCompletedTasks(e.target.checked);
+        setShowCompletedTasks_arg(e.target.checked);
+    };
 
     return (
         <>
             <div className="header">
+                <label className="switch-label">
+                    <input 
+                        type="checkbox" 
+                        className="switch-input" 
+                        checked={showCompletedTasks} 
+                        onChange={handleCheckboxChange} 
+                    />
+                    <span className="switch-slider"></span>
+                    <span>Show completed tasks?</span>
+                </label>
                 <img src={isSmallScreen ? simpleLogo : logo} alt="Logo" className="logo" />
-                <Button onClick={() => openProjectModal()} className='create-button'>Create New Project</Button>
+                <Button onClick={openProjectModal} className="create-button">Create New Project</Button>
             </div>
-            {isProjectModalOpen && <ProjectModal
-                        isOpen={isProjectModalOpen}
-                        onClose={() => setIsProjectModalOpen(false)}
-                        onSubmit={handleSubmit}
-                        initialData={{}}
-                    />}
+            {isProjectModalOpen && (
+                <ProjectModal
+                    isOpen={isProjectModalOpen}
+                    onClose={() => setIsProjectModalOpen(false)}
+                    onSubmit={handleSubmit}
+                    initialData={{}}
+                />
+            )}
         </>
     );
-}
+};
 
 export default Header;

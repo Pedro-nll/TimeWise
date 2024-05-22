@@ -5,7 +5,7 @@ import { faPen, faTrash, faCheck } from '@fortawesome/free-solid-svg-icons';
 import './Task.css';
 import { APIReq } from '../../APIReq';
 
-const Task = ({ task, onComplete, onDelete, onEdit, openModal}) => {
+const Task = ({ task, onComplete, openModal, openDeleteModal}) => {
 
     const handleComplete = async () => {
         const REST = new APIReq();
@@ -20,7 +20,7 @@ const Task = ({ task, onComplete, onDelete, onEdit, openModal}) => {
 
 
     return (
-        <div className="task-card" id={`task-${task.id}`}>
+        <div className="task-card" id={`task-${task.id}`} style={{ backgroundColor: task.done ? 'darkgreen' : 'initial' }}>
             <div className="task-header">
                 <div className="task-title">{task.name}</div>
                 <div className="task-buttons">
@@ -30,7 +30,7 @@ const Task = ({ task, onComplete, onDelete, onEdit, openModal}) => {
                     <button onClick={handleComplete}>
                         <FontAwesomeIcon icon={faCheck} />
                     </button>
-                    <button onClick={onDelete}>
+                    <button onClick={() => openDeleteModal(task)}>
                         <FontAwesomeIcon icon={faTrash} />
                     </button>
                 </div>

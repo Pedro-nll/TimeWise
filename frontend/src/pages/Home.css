@@ -67,6 +67,21 @@ body {
     }
 }
 
+.task-delete {
+    animation: taskDeleteFlash 1s forwards;
+}
+
+@keyframes taskDeleteFlash {
+    0% {
+        opacity: 1;
+    }
+    100% {
+        background-color: red;
+        opacity: 0;
+    }
+}
+
+
 
 
 .project-card.enter, .task-card.enter {

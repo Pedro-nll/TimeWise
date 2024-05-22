@@ -5,13 +5,13 @@ import { MantineProvider } from '@mantine/core'
 
 function App() {
   return (
-    <MantineProvider>
-        {<BrowserRouter>
-            <Routes>
-                <Route path="/" element={<Home />} />
-            </Routes>
-        </BrowserRouter>}
-      </MantineProvider>
+    <MantineProvider withGlobalStyles withNormalizeCSS>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Home />} />
+        </Routes>
+      </BrowserRouter>
+    </MantineProvider>
   )
 }
 

@@ -13,7 +13,7 @@ class TaskService:
         done = data.get('done')
         project_id = data.get('projectId')
         
-        if not name or not description or done is None or not project_id:
+        if not name or done is None or not project_id:
             return {"message": "Bad request"}, 400
         
         new_task = Task(name=name, description=description, done=done, project_id=project_id)

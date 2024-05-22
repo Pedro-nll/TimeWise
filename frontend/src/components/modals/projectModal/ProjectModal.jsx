@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import simpleLogo from '../../../assets/simpleLogo.png';
-import { Modal, TextInput, Textarea, Button } from '@mantine/core';
+import { TextInput, Textarea, Button } from '@mantine/core';
 import { toast, ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css'; 
+import 'react-toastify/dist/ReactToastify.css';
 import '../Modal.css';
 import ModalHeader from '../ModalHeader';
 
@@ -49,7 +48,7 @@ const ProjectModal = ({ isOpen, onClose, onSubmit, initialData = {} }) => {
 
     return (
         <>
-            <ToastContainer /> 
+            <ToastContainer />
             <div className="modal-overlay">
                 <div className="modal">
                     <ModalHeader onClose={onClose}></ModalHeader>

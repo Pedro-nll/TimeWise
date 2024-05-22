@@ -9,7 +9,7 @@ import TaskModal from '../components/modals/taskModal/TaskModal';
 import DeleteModal from '../components/modals/deleteModal/deleteModal';
 import Task from '../components/tasks/Task';
 
-let newProjectId = null; 
+let newProjectId = null;
 let newTaskId = null;
 
 const Home = () => {
@@ -18,6 +18,9 @@ const Home = () => {
     const [leavingProject, setLeavingProject] = useState(null);
     const [enteringTask, setEnteringTask] = useState(null);
 
+    const [showCompletedTasks, setShowCompletedTasks] = useState(false);
+
+    const [deleteModalType, setDeleteModalType] = useState('project')
     const [isTaskModalOpen, setIsTaskModalOpen] = useState(false);
     const [isProjectModalOpen, setIsProjectModalOpen] = useState(false);
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
@@ -47,13 +50,6 @@ const Home = () => {
         }
     }
 
-    const filterCompletedTasks = (projects) => {
-        return projects.map(project => ({
-            ...project,
-            tasks: project.tasks.filter(task => !task.completed)
-        }));
-    };
-
     const handleCompleteTask = (taskId) => {
         const taskElement = document.getElementById(`task-${taskId}`);
         if (taskElement) {
@@ -65,17 +61,36 @@ const Home = () => {
                         tasks: project.tasks.filter((task) => task.id !== taskId)
                     }))
                 );
+                if(showCompletedTasks){
+                    fetch_data()
+                }
             }, 1000); // Match this duration with the CSS animation duration
         }
     };
+    
 
-    const handleDeleteTask = (task) => {
-        setProjects((prevProjects) =>
-            prevProjects.map((project) => ({
-                ...project,
-                tasks: project.tasks.filter((task) => task.id !== taskId)
-            }))
-        );
+    const handleDeleteTask = async () => {
+        const REST = new APIReq()
+        try {
+            const response = await REST.deleteRequest(`/tasks/${currentTask.id}`)
+            if (response.status == 204) {
+                setIsDeleteModalOpen(false)
+                const taskElement = document.getElementById(`task-${currentTask.id}`);
+                if (taskElement) {
+                    taskElement.classList.add('task-delete');
+                    setTimeout(() => {
+                        setProjects((prevProjects) =>
+                            prevProjects.map((project) => ({
+                                ...project,
+                                tasks: project.tasks.filter((task) => task.id !== currentTask.id)
+                            }))
+                        );
+                    }, 1000);
+                }
+            }
+        } catch (e) {
+            console.error("Failed to delete task: ", e)
+        }
     }
 
     const handleEditTask = async (task) => {
@@ -100,7 +115,7 @@ const Home = () => {
             console.error("Error updating task:", error);
         }
     };
-    
+
 
     const handleCreateProject = async (projectData) => {
         const REST = new APIReq();
@@ -117,7 +132,7 @@ const Home = () => {
                 setIsProjectModalOpen(false);
                 setTimeout(() => {
                     setEnteringProject(null);
-                    setProjects((prevProjects) => 
+                    setProjects((prevProjects) =>
                         prevProjects.map((project) =>
                             project.id === newProjectId ? { ...project, glow: true } : project
                         )
@@ -184,7 +199,7 @@ const Home = () => {
                     setEnteringTask(newTaskId);
                     setTimeout(() => {
                         setEnteringTask(null);
-                        setProjects((prevProjects) => 
+                        setProjects((prevProjects) =>
                             prevProjects.map((project) => ({
                                 ...project,
                                 tasks: project.tasks.map((task) =>
@@ -193,7 +208,7 @@ const Home = () => {
                             }))
                         );
                         setTimeout(() => {
-                            setProjects((prevProjects) => 
+                            setProjects((prevProjects) =>
                                 prevProjects.map((project) => ({
                                     ...project,
                                     tasks: project.tasks.map((task) =>
@@ -229,7 +244,7 @@ const Home = () => {
             setIsTaskModalOpen(false);
             setIsDeleteModalOpen(false);
             setModalClass('');
-        }, 300); 
+        }, 300);
     };
 
     const openTaskModal = (project) => {
@@ -248,7 +263,15 @@ const Home = () => {
     }
 
     const openDeleteModal = (project) => {
+        setDeleteModalType('project')
         setCurrentProject(project);
+        setIsDeleteModalOpen(true);
+        setModalClass('modal-enter');
+    };
+
+    const openTaskDeleteModal = (task) => {
+        setDeleteModalType('task')
+        setCurrentTask(task);
         setIsDeleteModalOpen(true);
         setModalClass('modal-enter');
     };
@@ -256,15 +279,14 @@ const Home = () => {
     return (
         <>
             <header>
-                <Header handleCreateProject={handleCreateProject}/>
+                <Header handleCreateProject={handleCreateProject} setShowCompletedTasks_arg={setShowCompletedTasks} showCompletedTasks_arg={showCompletedTasks} />
             </header>
             <div className='body'>
                 <div className="grid-container">
                     {projects.map((project) => (
-                        <div key={project.id} 
-                             className={`project-card ${
-                                 project.id === newProjectId ? 'glow' : '' 
-                             } ${project.id === enteringProject ? 'enter enter-active' : ''} 
+                        <div key={project.id}
+                            className={`project-card ${project.id === newProjectId ? 'glow' : ''
+                                } ${project.id === enteringProject ? 'enter enter-active' : ''} 
                              ${project.id === leavingProject ? 'exit exit-active' : ''}`}>
                             <div className="project-header">
                                 <div className="project-title">{project.name}</div>
@@ -283,20 +305,21 @@ const Home = () => {
                             <div className="project-description">{project.description}</div>
                             <div className="task-list">
                                 {project.tasks && project.tasks
-                                    .filter((task) => !task.done)
+                                    .filter((task) => showCompletedTasks || !task.done)
+                                    .sort((a, b) => a.done - b.done)
                                     .map((task) => (
-                                        <div key={task.id} 
-                                            className={`${task.id === newTaskId ? 'glow' : ''} 
-                                            ${task.id === enteringTask ? 'enter enter-active' : ''}`}>
+                                        <div key={task.id}
+                                            className={`${task.id === newTaskId ? 'glow' : ''} ${task.id === enteringTask ? 'enter enter-active' : ''}`}>
                                             <Task
                                                 task={task}
                                                 onComplete={handleCompleteTask}
                                                 onDelete={handleDeleteTask}
                                                 onEdit={handleEditTask}
                                                 openModal={openTaskModalEditing}
+                                                openDeleteModal={openTaskDeleteModal}
                                             />
                                         </div>
-                                ))}
+                                    ))}
                             </div>
                         </div>
                     ))}
@@ -305,7 +328,7 @@ const Home = () => {
                         onClose={closeModal}
                         onSubmit={modalType === 'create' ? handleCreateProject : handleEditProject}
                         initialData={modalType === 'edit' ? currentProject : {}}
-                        className={modalClass} 
+                        className={modalClass}
                     />
                     <TaskModal
                         isOpen={isTaskModalOpen}
@@ -318,9 +341,9 @@ const Home = () => {
                     <DeleteModal
                         isOpen={isDeleteModalOpen}
                         onClose={closeModal}
-                        onConfirm={handleDeleteProject}
-                        itemName={currentProject?.name}
-                        className={modalClass} 
+                        onConfirm={deleteModalType === 'project' ? handleDeleteProject : handleDeleteTask}
+                        itemName={deleteModalType === 'project' ? currentProject?.name : currentTask?.name}
+                        className={modalClass}
                     />
                 </div>
             </div>

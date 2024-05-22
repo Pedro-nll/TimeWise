@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import '../Modal.css';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css'; 
 import { Button, TextInput, Textarea } from '@mantine/core';
 import ModalHeader from '../ModalHeader';
 
@@ -34,35 +36,50 @@ const TaskModal = ({ isOpen, onClose, onSubmit, initialData, projectId }) => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
+        if (!taskData.name) {
+            toast.warn('Task Name is required!', {
+                position: 'top-center',
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                className: 'custom-toast-warning'
+            });
+            return;
+        }
         onSubmit(taskData);
     };
 
     if (!isOpen) return null;
 
     return (
-        <div className="modal-overlay">
-            <div className="modal">
-                <ModalHeader onClose={onClose}></ModalHeader>
-                <div className="modal-body">
-                    <TextInput
-                        label="Task Name"
-                        name="name"
-                        value={taskData.name}
-                        onChange={handleChange}
-                        required
-                    />
-                    <Textarea
-                        label="Task Description"
-                        name="description"
-                        value={taskData.description}
-                        onChange={handleChange}
-                        required
-                    />
-                    <Button onClick={handleSubmit} className="submit-button">Save Task</Button>
+        <>
+            <ToastContainer /> 
+            <div className="modal-overlay">
+                <div className="modal">
+                    <ModalHeader onClose={onClose}></ModalHeader>
+                    <div className="modal-body">
+                        <TextInput
+                            label="Task Name"
+                            name="name"
+                            value={taskData.name}
+                            onChange={handleChange}
+                            required
+                        />
+                        <Textarea
+                            label="Task Description"
+                            name="description"
+                            value={taskData.description}
+                            onChange={handleChange}
+                        />
+                        <Button onClick={handleSubmit} className="submit-button">Save Task</Button>
+                    </div>
                 </div>
             </div>
-        </div>
-    );
+        </>
+    );    
 };
 
 export default TaskModal;
