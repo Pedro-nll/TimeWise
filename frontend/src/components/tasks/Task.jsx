@@ -20,7 +20,7 @@ const Task = ({ task, onComplete, onDelete, onEdit, openModal}) => {
 
 
     return (
-        <div className="task-card">
+        <div className="task-card" id={`task-${task.id}`}>
             <div className="task-header">
                 <div className="task-title">{task.name}</div>
                 <div className="task-buttons">

@@ -55,13 +55,24 @@ const Home = () => {
     };
 
     const handleCompleteTask = (taskId) => {
-        setProjects((prevProjects) =>
-            prevProjects.map((project) => ({
-                ...project,
-                tasks: project.tasks.filter((task) => task.id !== taskId)
-            }))
-        );
+        const taskElement = document.getElementById(`task-${taskId}`);
+        if (taskElement) {
+            taskElement.classList.add('task-complete');
+            setTimeout(() => {
+                setProjects((prevProjects) =>
+                    prevProjects.map((project) => ({
+                        ...project,
+                        tasks: project.tasks.filter((task) => task.id !== taskId)
+                    }))
+                );
+            }, 1000); // Match this duration with the CSS animation duration
+        }
     };
+
+    // const x = document.querySelectorAll('.task-card')
+    // x.forEach(y => {
+    //     y.style.background = 'green'
+    // })
 
     const handleDeleteTask = (task) => {
         setProjects((prevProjects) =>
@@ -277,18 +288,20 @@ const Home = () => {
                             </div>
                             <div className="project-description">{project.description}</div>
                             <div className="task-list">
-                                {project.tasks && project.tasks.map((task) => (
-                                    <div key={task.id} 
-                                        className={`${task.id === newTaskId ? 'glow' : ''} 
-                                        ${task.id === enteringTask ? 'enter enter-active' : ''}`}>
-                                        <Task
-                                            task={task}
-                                            onComplete={handleCompleteTask}
-                                            onDelete={handleDeleteTask}
-                                            onEdit={handleEditTask}
-                                            openModal = {openTaskModalEditing}
-                                        />
-                                    </div>
+                                {project.tasks && project.tasks
+                                    .filter((task) => !task.done)
+                                    .map((task) => (
+                                        <div key={task.id} 
+                                            className={`${task.id === newTaskId ? 'glow' : ''} 
+                                            ${task.id === enteringTask ? 'enter enter-active' : ''}`}>
+                                            <Task
+                                                task={task}
+                                                onComplete={handleCompleteTask}
+                                                onDelete={handleDeleteTask}
+                                                onEdit={handleEditTask}
+                                                openModal={openTaskModalEditing}
+                                            />
+                                        </div>
                                 ))}
                             </div>
                         </div>

@@ -53,6 +53,21 @@ body {
     text-align: left; /* Ensure content inside task is left-aligned */
 }
 
+.task-complete {
+    animation: taskCompleteFlash 1s forwards;
+}
+
+@keyframes taskCompleteFlash {
+    0% {
+        opacity: 1;
+    }
+    100% {
+        background-color: darkgreen;
+        opacity: 0;
+    }
+}
+
+
 
 .project-card.enter, .task-card.enter {
     transform: translateY(-100%);
