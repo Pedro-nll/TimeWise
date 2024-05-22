@@ -69,11 +69,6 @@ const Home = () => {
         }
     };
 
-    // const x = document.querySelectorAll('.task-card')
-    // x.forEach(y => {
-    //     y.style.background = 'green'
-    // })
-
     const handleDeleteTask = (task) => {
         setProjects((prevProjects) =>
             prevProjects.map((project) => ({
@@ -85,7 +80,6 @@ const Home = () => {
 
     const handleEditTask = async (task) => {
         const REST = new APIReq();
-        console.log(task);
         try {
             const body = JSON.stringify(task);
             const response = await REST.putRequest(`/tasks/${task.id}`, body);
@@ -184,7 +178,7 @@ const Home = () => {
             if (response.status === 200) {
                 const newTask = response.data.task;
                 newTaskId = newTask.id;
-                const updatedProjects = await REST.getRequest("/projects/all-with-tasks");
+                const updatedProjects = await REST.getRequest("/projects/all");
                 if (Array.isArray(updatedProjects)) {
                     setProjects(updatedProjects);
                     setEnteringTask(newTaskId);
