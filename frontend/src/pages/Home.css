@@ -14,11 +14,10 @@ body {
     align-items: flex-start; /* Ensure body items align to the top-left */
 }
 
-.project-card {
+.project-card, .task-card {
     background-color: #333;
     border-radius: 8px;
     padding: 1rem;
-    width: 300px;
     color: white;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     display: flex;
@@ -29,25 +28,51 @@ body {
     opacity: 1; /* For animation purposes */
 }
 
-.project-card.enter {
+.project-card {
+    width: 300px;
+}
+
+.task-card {
+    background-color: #333;
+    border-radius: 8px;
+    padding: 0.5rem; /* Adjust padding if needed */
+    color: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    margin: 0.5rem 0; /* Ensure proper spacing between task cards */
+    transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+    opacity: 1; /* For animation purposes */
+    text-align: left; /* Ensure all text inside is left-aligned by default */
+}
+
+.task-card .task-content {
+    margin: 0; /* Remove default margins from the task content */
+    padding: 0; /* Adjust padding if needed */
+    text-align: left; /* Ensure content inside task is left-aligned */
+}
+
+
+.project-card.enter, .task-card.enter {
     transform: translateY(-100%);
     opacity: 0;
 }
-.project-card.enter-active {
+.project-card.enter-active, .task-card.enter-active {
     transform: translateY(0);
     opacity: 1;
 }
 
-.project-card.exit {
+.project-card.exit, .task-card.exit {
     transform: translateY(0);
     opacity: 1;
 }
-.project-card.exit-active {
+.project-card.exit-active, .task-card.exit-active {
     transform: translateY(-100%);
     opacity: 0;
 }
 
-.project-card.glow {
+.project-card.glow, .task-card.glow {
     animation: glowBorder 1s ease-in-out;
 }
 
@@ -120,8 +145,6 @@ body {
 .modal-exit {
     animation: slideOut 0.3s forwards;
 }
-
-/* Glow effect for the new project */
 
 @keyframes glowBorder {
     0% {

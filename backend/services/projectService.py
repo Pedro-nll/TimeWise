@@ -8,21 +8,6 @@ class ProjectService:
         projects_json = [project.to_json() for project in projects]
         return projects_json
     
-    def get_all_projects_with_tasks(self):
-        projects_with_tasks = []
-        projects = self.get_all_projects()
-        for project in projects:
-            aux = {}
-            aux['id'] = project.get('id')
-            aux['name'] = project.get('name')
-            aux['description'] = project.get('description')
-            tasks = Task.query.filter_by(project_id = project['id'])
-            tasks_json = [task.to_json() for task in tasks]
-            aux['tasks'] = tasks_json
-            projects_with_tasks.append(aux)
-        
-        return projects_with_tasks
-    
     def create_project(self, data):
         name = data.get('name')
         description = data.get('description')
@@ -59,11 +44,17 @@ class ProjectService:
         new_name = data.get('name')
         new_description = data.get('description')
         
-        if not new_name or not new_description:
+        if not new_name:
             return {'message': 'Bad request'}, 400
         
         project.name = new_name
         project.description = new_description
         
+        project_json = {}
+        project_json['tasks'] = [task.to_json() for task in project.tasks]
+        project_json['id'] = project.id
+        project_json['name'] = project.name
+        project_json['description'] = project.description
+        
         db.session.commit()
-        return {'project': project.to_json()}, 200
+        return {'project': project_json}, 200

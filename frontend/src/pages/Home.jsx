@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import Header from '../components/header/Header';
-import Project from '../components/projects/Project';
-import { Grid } from '@mantine/core';
 import './Home.css';
 import { APIReq } from '../APIReq';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -12,17 +10,21 @@ import DeleteModal from '../components/modals/deleteModal/deleteModal';
 import Task from '../components/tasks/Task';
 
 let newProjectId = null; 
+let newTaskId = null;
 
 const Home = () => {
     const [projects, setProjects] = useState([]);
     const [enteringProject, setEnteringProject] = useState(null);
     const [leavingProject, setLeavingProject] = useState(null);
+    const [enteringTask, setEnteringTask] = useState(null);
 
     const [isTaskModalOpen, setIsTaskModalOpen] = useState(false);
     const [isProjectModalOpen, setIsProjectModalOpen] = useState(false);
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
     const [currentProject, setCurrentProject] = useState(null);
     const [modalType, setModalType] = useState('create');
+    const [taskModalType, setTaskModalType] = useState('create');
+    const [currentTask, setCurrentTask] = useState(null);
     const [modalClass, setModalClass] = useState(''); // For modal animation
 
     useEffect(() => {
@@ -32,7 +34,7 @@ const Home = () => {
     async function fetch_data() {
         const REST = new APIReq();
         try {
-            const response = await REST.getRequest("/projects/all-with-tasks");
+            const response = await REST.getRequest("/projects/all");
             if (Array.isArray(response)) {
                 setProjects(response);
             } else if (typeof response === 'object' && response !== null) {
@@ -44,6 +46,56 @@ const Home = () => {
             console.error("Failed to fetch projects:", error);
         }
     }
+
+    const filterCompletedTasks = (projects) => {
+        return projects.map(project => ({
+            ...project,
+            tasks: project.tasks.filter(task => !task.completed)
+        }));
+    };
+
+    const handleCompleteTask = (taskId) => {
+        setProjects((prevProjects) =>
+            prevProjects.map((project) => ({
+                ...project,
+                tasks: project.tasks.filter((task) => task.id !== taskId)
+            }))
+        );
+    };
+
+    const handleDeleteTask = (task) => {
+        setProjects((prevProjects) =>
+            prevProjects.map((project) => ({
+                ...project,
+                tasks: project.tasks.filter((task) => task.id !== taskId)
+            }))
+        );
+    }
+
+    const handleEditTask = async (task) => {
+        const REST = new APIReq();
+        console.log(task);
+        try {
+            const body = JSON.stringify(task);
+            const response = await REST.putRequest(`/tasks/${task.id}`, body);
+            if (response.status === 200) {
+                setProjects((prevProjects) =>
+                    prevProjects.map((project) => ({
+                        ...project,
+                        tasks: project.tasks.map((t) =>
+                            t.id === task.id ? { ...t, ...task } : t
+                        ),
+                    }))
+                );
+                setIsTaskModalOpen(false);
+            } else {
+                console.error("Failed to update task:", response);
+            }
+        } catch (error) {
+            console.error("Error updating task:", error);
+        }
+    };
+    
 
     const handleCreateProject = async (projectData) => {
         const REST = new APIReq();
@@ -58,16 +110,13 @@ const Home = () => {
                     return [...prevProjects, newProject];
                 });
                 setIsProjectModalOpen(false);
-                // Reset entering project state after the transition duration
                 setTimeout(() => {
                     setEnteringProject(null);
-                    // Add the glow effect after the slide-in animation
                     setProjects((prevProjects) => 
                         prevProjects.map((project) =>
                             project.id === newProjectId ? { ...project, glow: true } : project
                         )
                     );
-                    // Remove the glow effect after the glow animation duration
                     setTimeout(() => {
                         setProjects((prevProjects) =>
                             prevProjects.map((project) =>
@@ -88,7 +137,7 @@ const Home = () => {
             const body = JSON.stringify(projectData);
             const response = await REST.putRequest(`/projects/${currentProject.id}`, body);
             if (response.status === 200) {
-                const data = response.data[0].project
+                const data = response.data.project
                 setProjects(projects.map(project => project.id === currentProject.id ? data : project));
                 setIsProjectModalOpen(false);
             }
@@ -122,9 +171,33 @@ const Home = () => {
             const body = JSON.stringify(taskData);
             const response = await REST.postRequest('/tasks', body);
             if (response.status === 200) {
+                const newTask = response.data.task;
+                newTaskId = newTask.id;
                 const updatedProjects = await REST.getRequest("/projects/all-with-tasks");
                 if (Array.isArray(updatedProjects)) {
                     setProjects(updatedProjects);
+                    setEnteringTask(newTaskId);
+                    setTimeout(() => {
+                        setEnteringTask(null);
+                        setProjects((prevProjects) => 
+                            prevProjects.map((project) => ({
+                                ...project,
+                                tasks: project.tasks.map((task) =>
+                                    task.id === newTaskId ? { ...task, glow: true } : task
+                                )
+                            }))
+                        );
+                        setTimeout(() => {
+                            setProjects((prevProjects) => 
+                                prevProjects.map((project) => ({
+                                    ...project,
+                                    tasks: project.tasks.map((task) =>
+                                        task.id === newTaskId ? { ...task, glow: false } : task
+                                    )
+                                }))
+                            );
+                        }, 1000); // Glow duration must match the CSS animation duration
+                    }, 300);
                 } else if (typeof updatedProjects === 'object' && updatedProjects !== null) {
                     setProjects([updatedProjects]);
                 } else {
@@ -135,7 +208,7 @@ const Home = () => {
         } catch (error) {
             console.error('Error creating task:', error);
         }
-    };    
+    };
 
     const openProjectModal = (type, project = null) => {
         setModalType(type);
@@ -155,10 +228,19 @@ const Home = () => {
     };
 
     const openTaskModal = (project) => {
+        setTaskModalType('create')
         setCurrentProject(project);
+        setCurrentTask(null)
         setIsTaskModalOpen(true);
         setModalClass('modal-enter');
     };
+
+    const openTaskModalEditing = (task) => {
+        setTaskModalType('edit')
+        setCurrentTask(task)
+        setIsTaskModalOpen(true);
+        setModalClass('modal-enter')
+    }
 
     const openDeleteModal = (project) => {
         setCurrentProject(project);
@@ -173,7 +255,7 @@ const Home = () => {
             </header>
             <div className='body'>
                 <div className="grid-container">
-                {projects.map((project) => (
+                    {projects.map((project) => (
                         <div key={project.id} 
                              className={`project-card ${
                                  project.id === newProjectId ? 'glow' : '' 
@@ -196,7 +278,17 @@ const Home = () => {
                             <div className="project-description">{project.description}</div>
                             <div className="task-list">
                                 {project.tasks && project.tasks.map((task) => (
-                                    <Task key={task.id} task={task} />
+                                    <div key={task.id} 
+                                        className={`${task.id === newTaskId ? 'glow' : ''} 
+                                        ${task.id === enteringTask ? 'enter enter-active' : ''}`}>
+                                        <Task
+                                            task={task}
+                                            onComplete={handleCompleteTask}
+                                            onDelete={handleDeleteTask}
+                                            onEdit={handleEditTask}
+                                            openModal = {openTaskModalEditing}
+                                        />
+                                    </div>
                                 ))}
                             </div>
                         </div>
@@ -211,9 +303,10 @@ const Home = () => {
                     <TaskModal
                         isOpen={isTaskModalOpen}
                         onClose={closeModal}
-                        onSubmit={handleCreateTask}
-                        projectId={currentProject?.id}
-                        className={modalClass} 
+                        onSubmit={taskModalType === 'edit' ? handleEditTask : handleCreateTask}
+                        projectId={taskModalType === 'edit' ? currentTask?.projectId : currentProject?.id}
+                        initialData={taskModalType === 'edit' ? currentTask : {}}
+                        className={modalClass}
                     />
                     <DeleteModal
                         isOpen={isDeleteModalOpen}

@@ -47,7 +47,7 @@ class TaskService:
         new_description = data.get('description')
         new_done = data.get('done')
         
-        if not new_name or not new_description or not new_done:
+        if not new_name or new_done is None:
             return {'message': 'Bad request'}, 400
         
         task.name = new_name

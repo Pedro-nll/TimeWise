@@ -6,11 +6,12 @@ class Project(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(80), unique=False, nullable=False)
     description = db.Column(db.String(120), unique=False, nullable=True)
-    tasks = db.relationship("Task", back_populates='project', lazy='dynamic')
+    tasks = db.relationship("Task", back_populates='project', cascade="all, delete-orphan", lazy='dynamic')
     
     def to_json(self):
         return {
             "id": self.id,
             "name": self.name,
             "description": self.description,
+            "tasks": [task.to_json() for task in self.tasks]
         }

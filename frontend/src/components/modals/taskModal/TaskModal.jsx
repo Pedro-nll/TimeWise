@@ -1,15 +1,28 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import '../Modal.css';
 import { Button, TextInput, Textarea } from '@mantine/core';
 import ModalHeader from '../ModalHeader';
 
-const TaskModal = ({ isOpen, onClose, onSubmit, initialData = {}, projectId }) => {
+const TaskModal = ({ isOpen, onClose, onSubmit, initialData, projectId }) => {
     const [taskData, setTaskData] = useState({
-        name: initialData.name || '',
-        description: initialData.description || '',
-        done: initialData.done || false,
-        projectId: projectId || initialData.projectId
+        id: '',
+        name: '',
+        description: '',
+        done: false,
+        projectId: projectId
     });
+
+    useEffect(() => {
+        if (initialData) {
+            setTaskData({
+                id: initialData.id || '',
+                name: initialData.name || '',
+                description: initialData.description || '',
+                done: initialData.done || false,
+                projectId: initialData.projectId || projectId
+            });
+        }
+    }, [initialData, projectId]);
 
     const handleChange = (e) => {
         const { name, value, type, checked } = e.target;

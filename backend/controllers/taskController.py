@@ -35,7 +35,7 @@ def do_task(task_id):
 @tasks_blueprint.route('/<int:task_id>', methods=['PUT'])
 def update_task(task_id):
     data = request.get_json()
-    result = tasks_service.update_task(task_id, data)
+    result = tasks_service.edit_task(task_id, data)
     return jsonify(result)
 
 # Deletar uma task
