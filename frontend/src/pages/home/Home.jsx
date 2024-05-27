@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import Header from '../components/header/Header';
+import Header from '../../components/header/Header';
 import './Home.css';
-import { APIReq } from '../APIReq';
+import { APIReq } from '../../APIReq';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPen, faPlus, faTrash } from '@fortawesome/free-solid-svg-icons';
-import ProjectModal from '../components/modals/projectModal/ProjectModal';
-import TaskModal from '../components/modals/taskModal/TaskModal';
-import DeleteModal from '../components/modals/deleteModal/deleteModal';
-import Task from '../components/tasks/Task';
+import ProjectModal from '../../components/modals/projectModal/ProjectModal';
+import TaskModal from '../../components/modals/taskModal/TaskModal';
+import DeleteModal from '../../components/modals/deleteModal/deleteModal';
+import Task from '../../components/tasks/Task';
 
 let newProjectId = null;
 let newTaskId = null;
@@ -32,6 +32,8 @@ const Home = () => {
 
     useEffect(() => {
         fetch_data();
+        document.body.classList.remove('body-login');
+        document.body.classList.add('body-home');
     }, []);
 
     async function fetch_data() {

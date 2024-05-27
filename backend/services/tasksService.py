@@ -51,7 +51,7 @@ class TaskService:
             return {'message': 'Bad request'}, 400
         
         task.name = new_name
-        task.descrition = new_description
+        task.description = new_description
         task.done = new_done
         
         db.session.commit()

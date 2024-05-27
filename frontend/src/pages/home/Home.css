@@ -8,7 +8,7 @@
     align-items: flex-start; /* Align items to the top */
 }
 
-body {
+.body-home {
     display: flex;
     flex-direction: column;
     align-items: flex-start; /* Ensure body items align to the top-left */

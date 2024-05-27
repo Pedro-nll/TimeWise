@@ -1,0 +1,79 @@
+.body-login {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+.login-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 2rem;
+    background-color: #333;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.logo-login {
+    width: 100px;
+    height: auto;
+    margin-bottom: 1rem;
+}
+
+.error-message {
+    color: red;
+    margin-bottom: 1rem;
+}
+
+.register-button {
+    margin-top: 1rem;
+    width: 100%;
+}
+
+.submit-button-login {
+    background-color: #3d44c5; /* Darker button color */
+    color: white;
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 16px;
+    cursor: pointer;
+    width: 100%;
+    transition: background-color 0.3s, box-shadow 0.3s;
+}
+
+.submit-button-login:hover {
+    background-color: #212575; /* Even darker shade on hover */
+    box-shadow: 0 0 10px rgba(99, 99, 255, 0.5); /* Glow effect */
+}
+
+.register-button-login {
+    background-color: #535bf2; /* Darker button color */
+    color: white;
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 16px;
+    cursor: pointer;
+    width: 100%;
+    margin-bottom: 15px;
+    margin-top: 15px;
+    transition: background-color 0.3s, box-shadow 0.3s;
+}
+
+.register-button-login:hover {
+    background-color: #212575; /* Even darker shade on hover */
+    box-shadow: 0 0 10px rgba(99, 99, 255, 0.5); /* Glow effect */
+}
+
+
+
+
+input {
+    border-radius: 12px !important; /* Rounded borders */
+    border: none !important; /* Remove white border */
+    padding: 1rem; /* Make it bigger */
+    font-size: 1.2rem; /* Make it fatter */
+    width: 90%;
+    margin-bottom: 1rem; /* Space between inputs */
+}

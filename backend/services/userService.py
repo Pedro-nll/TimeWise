@@ -40,4 +40,4 @@ class UserService:
         # Create JWT token
         access_token = create_access_token(identity=user.id)
 
-        return {"access_token": access_token}, 200
+        return {"accessToken": access_token}, 200
