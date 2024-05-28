@@ -16,14 +16,17 @@ class UserService:
         if existing_user:
             return {"message": "Username already exists"}, 400
 
-        new_user = User(username=username, password=password)
+        hashed_password = generate_password_hash(password)
+        new_user = User(username=username, password=hashed_password)
         db.session.add(new_user)
         db.session.commit()
 
-        return {"message": "User registered successfully"}, 200
+        # Create JWT token for the new user
+        access_token = create_access_token(identity=new_user.id)
 
+        return {"accessToken": access_token}, 200
     
-
+    
     @staticmethod
     def login(data):
         username = data.get('username')
