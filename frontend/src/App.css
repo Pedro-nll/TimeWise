@@ -1,7 +1,6 @@
 #root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 60px 2rem 2rem 2rem; /* Top padding to prevent content from being hidden under the header */
+  padding-top: 40px;
+  padding-left: 15px;
   text-align: center;
 }
 

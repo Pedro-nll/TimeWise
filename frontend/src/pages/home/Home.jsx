@@ -283,8 +283,7 @@ const Home = () => {
             <header>
                 <Header handleCreateProject={handleCreateProject} setShowCompletedTasks_arg={setShowCompletedTasks} showCompletedTasks_arg={showCompletedTasks} />
             </header>
-            <div className='body'>
-                <div className="grid-container">
+            <div className='grid-container'> 
                     {projects.map((project) => (
                         <div key={project.id}
                             className={`project-card ${project.id === newProjectId ? 'glow' : ''
@@ -325,7 +324,8 @@ const Home = () => {
                             </div>
                         </div>
                     ))}
-                    <ProjectModal
+                </div>
+                <ProjectModal
                         isOpen={isProjectModalOpen}
                         onClose={closeModal}
                         onSubmit={modalType === 'create' ? handleCreateProject : handleEditProject}
@@ -347,8 +347,6 @@ const Home = () => {
                         itemName={deleteModalType === 'project' ? currentProject?.name : currentTask?.name}
                         className={modalClass}
                     />
-                </div>
-            </div>
         </>
     );
 }
