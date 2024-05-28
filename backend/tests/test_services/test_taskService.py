@@ -1,6 +1,6 @@
 import pytest
-from app.models.task import Task
-from app.services.taskService import TaskService
+from models.taskModel import Task
+from services.tasksService import TaskService
 
 @pytest.fixture
 def task_service():
