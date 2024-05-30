@@ -5,7 +5,7 @@ class TaskService:
     def get_all_tasks(self):
         tasks = Task.query.all()
         tasks_json = [task.to_json() for task in tasks]
-        return tasks_json
+        return tasks_json, 200
     
     def create_task(self, data):
         name = data.get('name')
@@ -30,7 +30,7 @@ class TaskService:
             return {"message": str(e)}, 500
 
     def do_task(self, id):
-        task = Task.query.get(id)
+        task = db.session.get(Task, id)
         
         if not task:
             return {"message": "Task not found"}, 404
@@ -41,10 +41,10 @@ class TaskService:
         return {"message": "Task done"}, 200
     
     def edit_task(self, id, data):
-        task = Task.query.get(id)
+        task = db.session.get(Task, id)
         
         if not task:
-            return {"message", "Task not found"}
+            return {"message": "Task not found"}, 404
         
         new_name = data.get('name')
         new_description = data.get('description')
@@ -61,7 +61,7 @@ class TaskService:
         return {'message': 'Task editted'}, 200
             
     def delete_task(self, id):
-        task = Task.query.get(id)
+        task = db.session.get(Task, id)
         
         if not task:
             return {"message": "Task not found"}, 404
@@ -71,9 +71,9 @@ class TaskService:
         return {"message": "Task deleted"}, 200
     
     def get_task(self, id):
-        task = Task.query.get(id)
+        task = db.session.get(Task, id)
         
         if not task:
             return {"message": "Task not found"}, 404
         
-        return task.to_json()
+        return task.to_json(), 200
