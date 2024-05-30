@@ -13,8 +13,11 @@ class TaskService:
         done = data.get('done')
         project_id = data.get('projectId')
         
-        if not name or done is None or not project_id:
+        if not name or not project_id:
             return {"message": "Bad request"}, 400
+        
+        if done is None:
+            done = False
         
         new_task = Task(name=name, description=description, done=done, project_id=project_id)
         
