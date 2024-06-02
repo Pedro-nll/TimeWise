@@ -110,6 +110,9 @@ def test_edit_task(app, task_service, db):
         task = db.session.get(Task, 1)
         desc = task.description
         task.description = "NEW DESCRIPTION"
+        
+        t_name = task.name
+        task.name = "TASK NAME"
         response, status_code = task_service.edit_task(task.id, task.to_json())
         
         assert status_code == 200
@@ -118,6 +121,8 @@ def test_edit_task(app, task_service, db):
         new_task = db.session.get(Task, 1)
         assert new_task.description != desc
         assert new_task.description == "NEW DESCRIPTION"
+        assert new_task.name != t_name
+        assert new_task.name == "TASK NAME"
         
 def test_edit_task_not_found(app, task_service):
     data = {

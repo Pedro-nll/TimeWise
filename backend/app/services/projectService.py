@@ -26,7 +26,7 @@ class ProjectService:
             return {'message': str(e)}, 400
         
     def delete_project(self, id):
-        project = Project.query.get(id)
+        project = db.session.get(Project, id)
         
         if not project:
             return {'message': 'Project not found'}, 404
@@ -36,7 +36,7 @@ class ProjectService:
         return {'message': 'Project deleted'}, 200
     
     def edit_project(self, id, data):
-        project = Project.query.get(id)
+        project = db.session.get(Project, id)
         
         if not project:
             return {'message': 'Project not found'}, 404
@@ -44,10 +44,8 @@ class ProjectService:
         new_name = data.get('name')
         new_description = data.get('description')
         
-        if not new_name:
-            return {'message': 'Bad request'}, 400
-        
-        project.name = new_name
+        if new_name:
+            project.name = new_name
         project.description = new_description
         
         project_json = {}

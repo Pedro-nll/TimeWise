@@ -50,12 +50,12 @@ class TaskService:
         new_description = data.get('description')
         new_done = data.get('done')
         
-        if not new_name or new_done is None:
-            return {'message': 'Bad request'}, 400
+        if new_name:
+            task.name = new_name
         
-        task.name = new_name
         task.description = new_description
-        task.done = new_done
+        if new_done is not None:
+            task.done = new_done
         
         db.session.commit()
         return {'message': 'Task editted'}, 200

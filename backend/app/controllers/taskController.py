@@ -10,7 +10,7 @@ tasks_service = TaskService()
 @jwt_required()
 def get_all_tasks():
     tasks = tasks_service.get_all_tasks()
-    return jsonify(tasks)
+    return jsonify(tasks), 200
 
 
 # buscar uma task especifica
